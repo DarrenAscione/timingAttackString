@@ -1,6 +1,5 @@
 import sys
 import time
-import random
 from compareString import *
 
 class StringComparer:
@@ -57,7 +56,6 @@ class StringComparer:
 		return max(time_list, key=time_list.get)
 
 	def index_change(self, key, array):
-		random.shuffle(self.characters)
 		for i in xrange(len(array)):
 			temp = list(array[i])
 			temp[key] = self.characters[i]
