@@ -4,11 +4,11 @@ from compareString import *
 
 class StringComparer:
 
-	def __init__(self, password):
+	def __init__(self, password, avglen=10):
 		# create array of all possible legal characters found in a password
 		self.characters = map(chr, xrange(33, 127))
 		self.password = password
-		self.avglen = 10
+		self.avglen = avglen
 
 	# returns password length vulnerability
 	def length_atk(self):
@@ -18,31 +18,31 @@ class StringComparer:
 		for i in xrange(self.avglen):
 			string1 = 'x' * i
 			time_list[i] = []
-
-			# averages out of 1000 runs for accuracy
-			for j in xrange(1000):
-				start = time.time()
-				compare(string1, string2)
-				time_list[i].append(time.time() - start)
-			time_list[i] = sum(time_list[i])/10.0
+			time_list[i] = self.time_loop(string1, 1000)
 
 		# string length that took the longest time == correct length of password
 		return max(time_list, key=time_list.get)
 
-	def string_atk(self, length):
+	# runs compare string function vulnerable count no. of times
+	def time_loop(self, string1, count):
+		time_list = []
+		# averages out of 1000 runs for accuracy
+		for i in xrange(count):
+			start = time.time()
+			compare(string1, self.password)
+			time_list.append(time.time() - start)
+		return sum(time_list)/10.0
 
-		#create array of to store all possible combination of passwords with each char
-		possible = []
-		for i in xrange(94):
-			possible.append(characters[i]+'x'*8)
 
-		# looping attack 20 times for accuracy
 
 
 if __name__ == '__main__':
 	string2 = 'password1'
 	stringHack = StringComparer(string2)
-	print stringHack.length_atk()
+	length = stringHack.length_atk()
+	print length
+
+
 
 
 
